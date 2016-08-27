@@ -19,9 +19,13 @@ testPlanetAddresses = [
     "812391-4365-675434",
     "abf654-1111-000000",
     "239f90-2bca-dd4231",
-    "8923ff-ab587-cdb12",
-    "abad1d-3aaba-d1d3a"
+    "111111-0000-111111",
+    "abad1d-3aaba-d1d3a",
+    "a61221-17a21-11111",
+    ""
 ]
+
+testPlanetAddresses[10] = testPlanetAddresses[randint(0,9)]
 
 planetSeed = CoordinateParser(testPlanetAddresses[6])
 planet = Planet(planetSeed, canvas)

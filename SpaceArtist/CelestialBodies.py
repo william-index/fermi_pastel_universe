@@ -10,20 +10,29 @@ imageAdjuster = ImageAdjuster()
 Parser for coordinate strings
 """
 class CelestialBodies:
-    def __init__(self):
-        print "celestial"
 
     def draw(self, scene, body, canvas):
+        # drips
+        draw = ImageDraw.Draw(scene)
+        for drip in body.drips:
+            draw.line(
+                (drip[0], drip[1]) + (drip[0], drip[1] + drip[2]),
+                (255, 255, 255, 255),
+                drip[3])
+
+        # planet body
         draw = ImageDraw.Draw(scene)
         draw.ellipse(body.box, fill=body.baseColor)
         pMask = Image.new("RGBA", canvas, (0, 0, 0, 0))
 
+        # planet terrain
         terrainBuilder = TerrainBuilder(body, canvas, pMask)
 
         # create body mask
         draw = ImageDraw.Draw(pMask)
         draw.ellipse(body.box, fill=(255,255,255,255))
 
+        # ring mask setup
         ringMask = Image.new("RGBA", canvas, (0, 0, 0, 0))
         pMaskRings = pMask.copy()
         pMaskRings = pMaskRings.crop((0, 0, canvas[0], canvas[1]/2))
@@ -57,6 +66,7 @@ class CelestialBodies:
         ringArt = ringArt.rotate(body.ringAngle)
         ringMask = ringMask.rotate(body.ringAngle)
 
+        # compose scene
         ringsScene.paste(ringArt, (0,0), imageAdjuster.invertMask(ringMask))
         scene.paste(ringsScene, (0,0), ringsScene)
         return scene

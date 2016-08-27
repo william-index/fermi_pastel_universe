@@ -35,6 +35,25 @@ class Planet:
 
         self.ringAngle = (self.seed.values[11]*self.seed.values[10]) %90
 
+        self.drips = self.generateDrips()
+
+    def generateDrips(self):
+        if self.seed.total % 2:
+            return []
+
+        totalDrips = self.seed.values[14]
+        if totalDrips == 0:
+            totalDrips = 1
+
+        drips = []
+        for drip in range(0, totalDrips):
+            dripX = ((self.seed.values[drip]*self.seed.total*drip) % (self.r*2)) + (self.box[0] + 1)
+            dripY = self.box[1] + self.r
+            dripH = (((self.seed.values[drip]*self.seed.total*(drip+1)) % 36) % (self.r)) + (self.r/3)
+            dripW = (self.seed.values[drip]%3) + 1
+            drips.append([dripX, dripY, dripH, dripW])
+        return drips
+
     def getSignMod(self):
         values = self.seed.values
         if self.seed.total % 2:
@@ -60,7 +79,6 @@ class Planet:
         if self.seed.total % 2:
             numRings = self.seed.total % 8
             ringSizes = [((values[16-ring-1] + (values[16-ring-1] % 2))*11)%24 for ring in range(0, numRings)]
-            print ringSizes
 
             for ringSize in ringSizes:
                 if ringSize > 2:
