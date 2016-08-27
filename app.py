@@ -5,6 +5,8 @@ from UniverseBuilder.Planet import Planet
 from SpaceArtist.CelestialBodies import CelestialBodies
 from Utils.ImageAdjuster import ImageAdjuster
 
+from random import randint
+
 bodyArtist = CelestialBodies()
 imageAdjuster = ImageAdjuster()
 
@@ -15,10 +17,11 @@ testPlanetAddresses = [
     "5b5b5b-1212-abcdef",
     "5b5b5b-1212-aaaaaa",
     "812391-4365-675434",
-    "abf654-1111-000000"
+    "abf654-1111-000000",
+    "239f90-2bca-dd4231"
 ]
 
-planetSeed = CoordinateParser(testPlanetAddresses[0])
+planetSeed = CoordinateParser(testPlanetAddresses[6])
 planet = Planet(planetSeed, canvas)
 
 
@@ -42,9 +45,26 @@ planet = Planet(planetSeed, canvas)
 scene = Image.new("RGBA", canvas, (0, 0, 0, 0))
 pMask = scene.copy()
 
-# Draw background color and planet
+# Draw background color
 draw = ImageDraw.Draw(scene)
-draw.rectangle(((0, 0), canvas), fill=imageAdjuster.adjustHSV(planet.baseColor, [.1, 0, 0]))
+bgColor = imageAdjuster.adjustHSV(planet.baseColor, [.1, 0, 0])
+draw.rectangle(((0, 0), canvas), fill=bgColor)
+
+# create background gradient
+sceneData = scene.load()
+spaceRangeRate = ((((planet.seed.total%4)+1)/10.0)+.1)
+
+for x in range(0, canvas[0]):
+    for y in range(0, canvas[1]):
+        sceneData[x,y] = imageAdjuster.adjustHSV(sceneData[x,y],
+            [
+                ((y+(x*planet.signMod))/200.0)*spaceRangeRate,
+                0,
+                0
+            ]
+        )
+
+
 
 # draw planet
 scene = bodyArtist.draw(scene, planet, canvas)

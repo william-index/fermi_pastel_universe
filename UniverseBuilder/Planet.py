@@ -24,6 +24,8 @@ class Planet:
         self.moons = self.generateMoons()
         self.rings = self.generateRings()
 
+        self.signMod = self.getSignMod()
+
         # colorsys
         self.baseColor = self.getColor(0)
         self.secondaryColor = self.getColor(1)
@@ -31,6 +33,13 @@ class Planet:
         self.ringColor = self.imageAdjuster.adjustHSV(self.secondaryColor, [0.4, 0, 0])
         self.moonColors = [self.getColor(3), self.getColor(4), self.getColor(5), self.getColor(6)]
 
+    def getSignMod(self):
+        values = self.seed.values
+        if self.seed.total % 2:
+            return 1
+        else:
+            return -1
+            
     def getColor(self, key, mod=0):
         values = self.seed.values
         totalNumberSeed = 0
