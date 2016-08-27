@@ -18,20 +18,22 @@ testPlanetAddresses = [
     "5b5b5b-1212-aaaaaa",
     "812391-4365-675434",
     "abf654-1111-000000",
-    "239f90-2bca-dd4231"
+    "239f90-2bca-dd4231",
+    "8923ff-ab587-cdb12",
+    "abad1d-3aaba-d1d3a"
 ]
 
 planetSeed = CoordinateParser(testPlanetAddresses[6])
 planet = Planet(planetSeed, canvas)
 
 
-# @TODO background gradient meshes
-# @TODO shiny planets
+
 # @TODO drips
+# @TODO atmospheres
+# @TODO shiny planets
 # @TODO Bandaids on planets
 # @TODO background stars
 
-# @TODO atmospheres
 # @TODO craters
 
 # @TODO planet states

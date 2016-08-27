@@ -33,13 +33,15 @@ class Planet:
         self.ringColor = self.imageAdjuster.adjustHSV(self.secondaryColor, [0.4, 0, 0])
         self.moonColors = [self.getColor(3), self.getColor(4), self.getColor(5), self.getColor(6)]
 
+        self.ringAngle = (self.seed.values[11]*self.seed.values[10]) %90
+
     def getSignMod(self):
         values = self.seed.values
         if self.seed.total % 2:
             return 1
         else:
             return -1
-            
+
     def getColor(self, key, mod=0):
         values = self.seed.values
         totalNumberSeed = 0

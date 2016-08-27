@@ -53,6 +53,10 @@ class CelestialBodies:
         for ring in body.rings:
             draw.ellipse(ring, outline=body.ringColor)
 
+        # angle rings
+        ringArt = ringArt.rotate(body.ringAngle)
+        ringMask = ringMask.rotate(body.ringAngle)
+
         ringsScene.paste(ringArt, (0,0), imageAdjuster.invertMask(ringMask))
         scene.paste(ringsScene, (0,0), ringsScene)
         return scene
