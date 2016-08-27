@@ -17,13 +17,11 @@ planet = Planet(planetSeed, canvas)
 
 
 # @TODO method/class for draw celestial body
-# @TODO seeds
 # @TODO colors
 # @TODO gradients
 # @TODO gas planets
 # @TODO craters
 # @TODO atmospheres
-# @TODO rings
 # @TODO background gradient meshes
 # @TODO background stars
 # @TODO planet states
