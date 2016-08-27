@@ -6,6 +6,8 @@ Generates Planet Data and details from seed
 class Planet:
     def __init__(self, seed, canvas):
         self.seed = seed
+        self.canvas = canvas
+
         self.r = self.getPlanetRadius()
         self.box = (canvas[0]/2-self.r, canvas[1]/2-self.r, canvas[0]/2+self.r, canvas[1]/2+self.r)
         self.landCount = self.getLandMassCount()
@@ -13,6 +15,51 @@ class Planet:
 
         self.shadows = self.createShadows()
         self.shadowIntensity = self.seed.values[8]/16.0 % 0.4
+
+        self.moons = self.generateMoons()
+        self.rings = self.generateRings()
+
+        # colorsys
+        self.ringColor = (0,0,255,200)
+
+    def generateRings(self):
+        values = self.seed.values
+        box = self.box
+        rings = []
+
+        if self.seed.total % 2:
+            numRings = self.seed.total % 8
+            ringSizes = [((values[16-ring-1] + (values[16-ring-1] % 2))*11)%24 for ring in range(0, numRings)]
+            print ringSizes
+
+            for ringSize in ringSizes:
+                ringWidth = self.r + ringSize/2
+                ringHeight = self.r/2
+
+                ringX = box[0] - ringSize/2
+                ringY = box[1] + self.r - ringSize/2
+                ringW = box[2] + ringSize/2
+                ringH = ringY + ringSize
+                ring = (ringX, ringY, ringW, ringH)
+                rings.append(ring)
+
+        return rings
+
+    def generateMoons(self):
+        values = self.seed.values
+        moons = []
+        for m in range(0, values[11] % 4):
+            valueIndex = values[(values[(0+m)%16])%16]
+
+            moonSize = int((valueIndex % self.r/3) + 2)
+            moonSize = moonSize + (moonSize % 2) #keep it even :)
+
+            moonX = int(values[valueIndex]/16.0 * self.canvas[0]*.7)
+            moonY = int(values[values[valueIndex]]/16.0 * self.canvas[1]*.7)
+            moon = ((moonX, moonY), (moonSize+moonX, moonSize+moonY))
+
+            moons.append(moon)
+        return moons
 
     def getPlanetRadius(self):
         return (self.seed.total % 20) + 4

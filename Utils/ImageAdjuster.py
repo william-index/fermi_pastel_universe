@@ -20,3 +20,14 @@ class ImageAdjuster:
                     imageData[x, y] = (int(rgb[0]*255), int(rgb[1]*255), int(rgb[2]*255), 255)
 
         return image
+
+    def invertMask(self, mask):
+        maskData = mask.load()
+        for y in xrange(mask.size[1]):
+            for x in xrange(mask.size[0]):
+                if maskData[x, y] == (0,0,0,0):
+                    maskData[x, y] = (255,255,255,255)
+                else:
+                    maskData[x, y] = (0,0,0,0)
+
+        return mask
