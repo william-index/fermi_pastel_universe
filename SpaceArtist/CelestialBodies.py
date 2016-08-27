@@ -15,7 +15,7 @@ class CelestialBodies:
 
     def draw(self, scene, body, canvas):
         draw = ImageDraw.Draw(scene)
-        draw.ellipse(body.box, fill=(135,205,212,255))
+        draw.ellipse(body.box, fill=body.baseColor)
         pMask = Image.new("RGBA", canvas, (0, 0, 0, 0))
 
         terrainBuilder = TerrainBuilder(body, canvas, pMask)

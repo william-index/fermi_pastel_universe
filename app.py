@@ -3,27 +3,34 @@ from PIL import Image, ImageDraw, ImageOps
 from UniverseBuilder.CoordinateParser import CoordinateParser
 from UniverseBuilder.Planet import Planet
 from SpaceArtist.CelestialBodies import CelestialBodies
+from Utils.ImageAdjuster import ImageAdjuster
 
 bodyArtist = CelestialBodies()
+imageAdjuster = ImageAdjuster()
 
-canvas = (100, 80)
-# "1974cf-d321-ff224a"
-# "523b56-789f-abcdef"
-# "5b5b5b-1212-abcdef"
-# "5b5b5b-1212-aaaaaa"
-# "812391-4365-675434"
-planetSeed = CoordinateParser("1974cf-d321-ff224a")
+canvas = (100, 100)
+testPlanetAddresses = [
+    "1974cf-d321-ff224a",
+    "523b56-789f-abcdef",
+    "5b5b5b-1212-abcdef",
+    "5b5b5b-1212-aaaaaa",
+    "812391-4365-675434",
+    "abf654-1111-000000"
+]
+
+planetSeed = CoordinateParser(testPlanetAddresses[0])
 planet = Planet(planetSeed, canvas)
 
 
-# @TODO method/class for draw celestial body
-# @TODO colors
-# @TODO gradients
-# @TODO gas planets
-# @TODO craters
-# @TODO atmospheres
 # @TODO background gradient meshes
+# @TODO shiny planets
+# @TODO drips
+# @TODO Bandaids on planets
 # @TODO background stars
+
+# @TODO atmospheres
+# @TODO craters
+
 # @TODO planet states
 #       - life
 #       - life types
@@ -37,14 +44,14 @@ pMask = scene.copy()
 
 # Draw background color and planet
 draw = ImageDraw.Draw(scene)
-draw.rectangle(((0, 0), canvas), fill=(235,205,212,255))
+draw.rectangle(((0, 0), canvas), fill=imageAdjuster.adjustHSV(planet.baseColor, [.1, 0, 0]))
 
 # draw planet
 scene = bodyArtist.draw(scene, planet, canvas)
 
 # add moons
-for moon in planet.moons:
-    draw.ellipse(moon, fill=(235,0,0,255))
+for k, moon in enumerate(planet.moons):
+    draw.ellipse(moon, fill=planet.moonColors[k], outline=(255,255,255,255))
 
-scene = scene.resize((500, 400), Image.NEAREST)
+scene = scene.resize((canvas[0]*5, canvas[1]*5), Image.NEAREST)
 scene.show()

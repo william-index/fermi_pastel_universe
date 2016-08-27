@@ -1,10 +1,15 @@
 #!/usr/bin/python
 
+from DataLists.Colors import colors
+from Utils.ImageAdjuster import ImageAdjuster
+
 """
 Generates Planet Data and details from seed
 """
 class Planet:
     def __init__(self, seed, canvas):
+        self.imageAdjuster = ImageAdjuster()
+
         self.seed = seed
         self.canvas = canvas
 
@@ -14,13 +19,27 @@ class Planet:
         self.lands = self.createLandMassPatterns()
 
         self.shadows = self.createShadows()
-        self.shadowIntensity = self.seed.values[8]/16.0 % 0.4
+        self.shadowIntensity = (self.seed.values[8]/16.0 % 0.3) + 0.1
 
         self.moons = self.generateMoons()
         self.rings = self.generateRings()
 
         # colorsys
-        self.ringColor = (0,0,255,200)
+        self.baseColor = self.getColor(0)
+        self.secondaryColor = self.getColor(1)
+
+        self.ringColor = self.imageAdjuster.adjustHSV(self.secondaryColor, [0.4, 0, 0])
+        self.moonColors = [self.getColor(3), self.getColor(4), self.getColor(5), self.getColor(6)]
+
+    def getColor(self, key, mod=0):
+        values = self.seed.values
+        totalNumberSeed = 0
+        for k, v in enumerate(range(key % 16, (key + 3) % 16)):
+            key = values[values[v]]
+            totalNumberSeed += key
+
+        colorKey = ((totalNumberSeed % len(colors)) + mod) % len(colors)
+        return colors[colorKey]
 
     def generateRings(self):
         values = self.seed.values
@@ -33,15 +52,16 @@ class Planet:
             print ringSizes
 
             for ringSize in ringSizes:
-                ringWidth = self.r + ringSize/2
-                ringHeight = self.r/2
+                if ringSize > 2:
+                    ringWidth = self.r + ringSize/2
+                    ringHeight = self.r/2
 
-                ringX = box[0] - ringSize/2
-                ringY = box[1] + self.r - ringSize/2
-                ringW = box[2] + ringSize/2
-                ringH = ringY + ringSize
-                ring = (ringX, ringY, ringW, ringH)
-                rings.append(ring)
+                    ringX = box[0] - ringSize/2
+                    ringY = box[1] + self.r - ringSize/2
+                    ringW = box[2] + ringSize/2
+                    ringH = ringY + ringSize
+                    ring = (ringX, ringY, ringW, ringH)
+                    rings.append(ring)
 
         return rings
 

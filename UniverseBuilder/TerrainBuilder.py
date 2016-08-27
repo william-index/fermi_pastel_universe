@@ -33,7 +33,7 @@ class TerrainBuilder:
             for shift in shiftData:
                 lx += shift
                 ly += (shift*shift) % 8 - 3
-                draw.ellipse((lx-lr, ly-lr, lx+lr, ly+lr), fill=(242,182,197,255))
+                draw.ellipse((lx-lr, ly-lr, lx+lr, ly+lr), fill=planet.secondaryColor)
                 lr = (lr+1) % 6
 
         blank = Image.new("RGBA", self.canvas)
