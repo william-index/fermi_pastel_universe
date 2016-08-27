@@ -55,6 +55,29 @@ class CelestialBodies:
         draw = ImageDraw.Draw(scene)
         draw.ellipse(body.box, outline=(255,255,255,255))
 
+        # add shininess
+        if body.isShiny:
+            shines = Image.new("RGBA", canvas, (0, 0, 0, 0))
+            draw = ImageDraw.Draw(shines)
+
+            shineDia = body.r/1.6
+            shine1X = body.box[0]+(body.r*2-body.r/2) - (shineDia/2)
+            shine1Y = body.box[1]+body.r/2
+            draw.ellipse(
+                (shine1X, shine1Y, shine1X+shineDia, shine1Y+shineDia),
+                fill=(255,255,255,128),
+                outline=(255,255,255,60))
+
+            shineDia2 = body.r/4
+            shine1X = body.box[0]+(body.r*2-body.r/2) - (shineDia/2) - shineDia2
+            shine1Y = body.box[1]+body.r/2 + shineDia
+            draw.ellipse(
+                (shine1X, shine1Y, shine1X+shineDia2, shine1Y+shineDia2),
+                fill=(255,255,255,128),
+                outline=(255,255,255,60))
+
+            scene.paste(shines, (0,0), shines)
+
         # draw rings
         ringsScene = Image.new("RGBA", canvas, (0, 0, 0, 0))
         ringArt = Image.new("RGBA", canvas, (0, 0, 0, 0))

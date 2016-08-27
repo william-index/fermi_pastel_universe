@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from PIL import Image, ImageDraw, ImageOps
-from UniverseBuilder.CoordinateParser import CoordinateParser
+from UniverseBuilder.CoordinateParser import CoordinateParser, CoordinateGenerator
 from UniverseBuilder.Planet import Planet
 from SpaceArtist.CelestialBodies import CelestialBodies
 from Utils.ImageAdjuster import ImageAdjuster
@@ -9,6 +9,7 @@ from random import randint
 
 bodyArtist = CelestialBodies()
 imageAdjuster = ImageAdjuster()
+coordGenerator = CoordinateGenerator()
 
 canvas = (100, 100)
 testPlanetAddresses = [
@@ -22,17 +23,17 @@ testPlanetAddresses = [
     "111111-0000-111111",
     "abad1d-3aaba-d1d3a",
     "a61221-17a21-11111",
-    ""
+    "",
+    coordGenerator.getRandomAddress()
 ]
 
 testPlanetAddresses[10] = testPlanetAddresses[randint(0,9)]
 
-planetSeed = CoordinateParser(testPlanetAddresses[6])
+planetSeed = CoordinateParser(testPlanetAddresses[11])
 planet = Planet(planetSeed, canvas)
 
 
 
-# @TODO drips
 # @TODO atmospheres
 # @TODO shiny planets
 # @TODO Bandaids on planets

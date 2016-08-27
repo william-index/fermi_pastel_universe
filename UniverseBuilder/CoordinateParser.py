@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from random import randint
 
 """
 Parser for coordinate strings
@@ -47,3 +48,13 @@ class CoordinateParser:
 
     def hexCharToInt(self, i):
         return int('0x' + i, 0)
+
+class CoordinateGenerator:
+    def getRandomAddress(self):
+        values = []
+        for i in range(0,16):
+            values.append(hex(randint(0,16))[2:])
+        values.insert(6,'-')
+        values.insert(11,'-')
+        print ''.join(values)
+        return ''.join(values)

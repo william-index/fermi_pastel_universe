@@ -3,6 +3,8 @@
 from DataLists.Colors import colors
 from Utils.ImageAdjuster import ImageAdjuster
 
+from random import randint
+
 """
 Generates Planet Data and details from seed
 """
@@ -16,7 +18,9 @@ class Planet:
         self.r = self.getPlanetRadius()
         self.box = (canvas[0]/2-self.r, canvas[1]/2-self.r, canvas[0]/2+self.r, canvas[1]/2+self.r)
         self.landCount = self.getLandMassCount()
-        self.lands = self.createLandMassPatterns()
+        self.lands = self.createLandMassPatterns(self.landCount)
+
+        self.atmosphere = self.createAtmosphere()
 
         self.shadows = self.createShadows()
         self.shadowIntensity = (self.seed.values[8]/16.0 % 0.3) + 0.1
@@ -25,6 +29,8 @@ class Planet:
         self.rings = self.generateRings()
 
         self.signMod = self.getSignMod()
+
+        self.isShiny = self.seed.values[self.seed.values[7]] % 2
 
         # colorsys
         self.baseColor = self.getColor(0)
@@ -120,13 +126,13 @@ class Planet:
             landCount = (self.seed.total % landCountSeedIndex)
         return landCount
 
-    def createLandMassPatterns(self):
+    def createLandMassPatterns(self, landCount):
         lands = []
 
-        for i in range(0, self.landCount):
-            index1 = self.seed.values[i]
+        for i in range(0, landCount):
+            index1 = self.seed.values[i%16]
             index2 = self.seed.values[(index1*index1) % 16]
-            landSteps = ((self.seed.total % 16) % index2) + 2
+            landSteps = ((self.seed.total % 16) % (index2+1)) + 2
             land = [(((self.seed.values[self.seed.total % 16]) % (step + 1)) % 8) - 3 for step in range(0, landSteps)]
 
             xPercent = float(((index2 + 1.0) / ((index1*index2 % 16) + 1.0))) % 1.0
@@ -138,6 +144,10 @@ class Planet:
             lands.append([landx, landy, landr] + land)
 
         return lands
+
+    def createAtmosphere(self):
+        print "creating atmosphere"
+        return
 
     def createShadows(self):
         shadow1 = (self.box[0]+self.box[0]/8, self.box[1]+self.box[1]/8, self.box[2]-self.box[0]/4, self.box[3]-self.box[0]/4)
