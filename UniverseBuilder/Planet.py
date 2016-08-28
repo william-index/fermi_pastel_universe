@@ -140,13 +140,13 @@ class Planet:
 
             landx = self.box[0] + int(self.r*2 * xPercent)
             landy = self.box[1] + int(self.r*2 * yPercent)
-            landr = ((self.box[0] * int(100 * xPercent) * int(100 * yPercent)) % index1) + 1
+            landr = ((self.box[0] * int(100 * xPercent) * int(100 * yPercent)) % (index1+1)) + 1
             lands.append([landx, landy, landr] + land)
 
         return lands
 
     def createAtmosphere(self):
-        print "creating atmosphere"
+        print "atmospheres not enabled"
         return
 
     def createShadows(self):
