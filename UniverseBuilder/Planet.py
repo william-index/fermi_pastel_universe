@@ -37,6 +37,7 @@ class Planet:
         # colorsys
         self.baseColor = self.getColor(0)
         self.secondaryColor = self.getColor(1)
+        self.bgColor = self.imageAdjuster.adjustHSV(self.baseColor, [.1, 0, 0])
 
         self.ringColor = self.imageAdjuster.adjustHSV(self.secondaryColor, [0.4, 0, 0])
         self.moonColors = [self.getColor(3), self.getColor(4), self.getColor(5), self.getColor(6), self.getColor(3), self.getColor(4), self.getColor(5), self.getColor(6), self.getColor(3), self.getColor(4), self.getColor(5), self.getColor(6)]
@@ -44,6 +45,23 @@ class Planet:
         self.ringAngle = (self.seed.values[11]*self.seed.values[10]) %90
 
         self.drips = self.generateDrips()
+
+        self.life = self.calculateLife()
+
+    def calculateLife(self):
+        lifeTypes = []
+        values = self.seed.values
+        print self.seed.total % 25
+        print sum(values[0:6])
+        if self.seed.total % 25 < 2 and sum(values[0:6]) >= 30:
+            if sum(values[0:6]) == sum(values[6:10]) == sum(values[10:16]):
+                lifeTypes = ["intelligent"]
+            elif sum(values[0:6]) == sum(values[10:16]):
+                lifeTypes = ["flora", "fauna"]
+            else:
+                lifeTypes = ["primordial"]
+
+        return lifeTypes
 
     def generateDrips(self):
         if self.seed.total % 2:

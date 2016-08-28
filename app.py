@@ -1,15 +1,17 @@
 #!/usr/bin/python
-from PIL import Image, ImageDraw, ImageOps
+from PIL import Image, ImageDraw, ImageOps, ImageFont
 from UniverseBuilder.CoordinateParser import CoordinateParser, CoordinateGenerator
 from UniverseBuilder.Planet import Planet
 from SpaceArtist.CelestialBodies import CelestialBodies
 from SpaceArtist.OpenSpace import OpenSpace
+from SpaceArtist.InterfaceOverlay import InterfaceOverlay
 from Utils.ImageAdjuster import ImageAdjuster
 
 from random import randint
 
 bodyArtist = CelestialBodies()
 starArtist = OpenSpace()
+interfaceArtist = InterfaceOverlay()
 imageAdjuster = ImageAdjuster()
 coordGenerator = CoordinateGenerator()
 
@@ -27,26 +29,27 @@ testPlanetAddresses = [
     "a61221-17a21-11111",
     "cb1143-0019-6a43c9",
     coordGenerator.getRandomAddress(),
-    "c516da-576a-81cc50"
+    "803530-4cff-3ae251"
 ]
 
 planetSeed = CoordinateParser(testPlanetAddresses[11])
 planet = Planet(planetSeed, canvas)
 
 
-# @TODO background streaks
-# @TODO atmospheres
 # @TODO Bandaids on planets
 
-# @TODO craters
-
-# @TODO planet states
+# @TODO Show planet name/ID
+# @TODO planet stats
+#       - temperature
 #       - life
 #       - life types
 
 # @TODO planet destruction
 # @TODO advances civilization (visible and space crafts)
 # @TODO artificial planets?
+# @TODO post planets to twitter
+# @TODO reply with planets to explorers: http://stackoverflow.com/questions/16377315/tweepy-user-id-from-mention
+#       http://tweepy.readthedocs.io/en/v3.5.0/cursor_tutorial.html
 
 # Create Scene for Universe Photo
 scene = Image.new("RGBA", canvas, (0, 0, 0, 0))
@@ -69,5 +72,13 @@ draw = ImageDraw.Draw(scene)
 for k, moon in enumerate(planet.moons):
     draw.ellipse(moon, fill=planet.moonColors[k], outline=(255,255,255,255))
 
-scene = scene.resize((canvas[0]*5, canvas[1]*5), Image.NEAREST)
+
+# Scale and resize
+canvas = (canvas[0]*5, canvas[1]*5)
+scene = scene.resize(canvas, Image.NEAREST)
+
+
+# Interface
+scene = interfaceArtist.draw(scene, planet, canvas)
+
 scene.show()

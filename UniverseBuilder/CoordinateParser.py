@@ -53,7 +53,9 @@ class CoordinateGenerator:
     def getRandomAddress(self):
         values = []
         for i in range(0,16):
-            values.append(hex(randint(0,16))[2:])
+            ri = randint(0,15)
+            rHex = hex(ri)[2:]
+            values.append(rHex)
         values.insert(6,'-')
         values.insert(11,'-')
         print ''.join(values)

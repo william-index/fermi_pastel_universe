@@ -13,7 +13,7 @@ class OpenSpace:
 
     def drawBackground(self, scene, body, canvas):
         draw = ImageDraw.Draw(scene)
-        bgColor = imageAdjuster.adjustHSV(body.baseColor, [.1, 0, 0])
+        bgColor = body.bgColor
         draw.rectangle(((0, 0), canvas), fill=bgColor)
 
         # create background gradient
