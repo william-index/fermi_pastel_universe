@@ -37,7 +37,7 @@ class Planet:
         self.secondaryColor = self.getColor(1)
 
         self.ringColor = self.imageAdjuster.adjustHSV(self.secondaryColor, [0.4, 0, 0])
-        self.moonColors = [self.getColor(3), self.getColor(4), self.getColor(5), self.getColor(6)]
+        self.moonColors = [self.getColor(3), self.getColor(4), self.getColor(5), self.getColor(6), self.getColor(3), self.getColor(4), self.getColor(5), self.getColor(6), self.getColor(3), self.getColor(4), self.getColor(5), self.getColor(6)]
 
         self.ringAngle = (self.seed.values[11]*self.seed.values[10]) %90
 
@@ -103,17 +103,18 @@ class Planet:
     def generateMoons(self):
         values = self.seed.values
         moons = []
-        for m in range(0, values[11] % 4):
-            valueIndex = values[(values[(0+m)%16])%16]
+        if values[13] % 2:
+            for m in range(0, values[values[11]] % 7):
+                valueIndex = values[(values[(0+m)%16])%16]
 
-            moonSize = int((valueIndex % self.r/3) + 2)
-            moonSize = moonSize + (moonSize % 2) #keep it even :)
+                moonSize = int((valueIndex % self.r/3.0) + 2)
+                moonSize = moonSize + (moonSize % 2) #keep it even :)
 
-            moonX = int(values[valueIndex]/16.0 * self.canvas[0]*.7)
-            moonY = int(values[values[valueIndex]]/16.0 * self.canvas[1]*.7)
-            moon = ((moonX, moonY), (moonSize+moonX, moonSize+moonY))
+                moonX = int(values[valueIndex]/16.0 * self.canvas[0]*.7)
+                moonY = int(values[values[valueIndex]]/16.0 * self.canvas[1]*.7)
+                moon = ((moonX, moonY), (moonSize+moonX, moonSize+moonY))
 
-            moons.append(moon)
+                moons.append(moon)
         return moons
 
     def getPlanetRadius(self):
@@ -122,7 +123,7 @@ class Planet:
     def getLandMassCount(self):
         landCountSeedIndex = self.seed.values[self.seed.total % 16]
         landCount = 0
-        if landCountSeedIndex % 2:
+        if landCountSeedIndex % 3:
             landCount = (self.seed.total % landCountSeedIndex)
         return landCount
 
