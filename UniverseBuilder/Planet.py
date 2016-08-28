@@ -32,6 +32,8 @@ class Planet:
 
         self.isShiny = self.seed.values[self.seed.values[7]] % 2
 
+        self.streaks = self.seed.values[9] % 5
+
         # colorsys
         self.baseColor = self.getColor(0)
         self.secondaryColor = self.getColor(1)

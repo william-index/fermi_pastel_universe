@@ -27,6 +27,33 @@ class OpenSpace:
                         0,
                         0])
 
+    def drawStreaks(self, scene, body, canvas):
+        values = body.seed.values
+
+        streakField = Image.new("RGBA", canvas, (0, 0, 0, 0))
+        draw = ImageDraw.Draw(streakField)
+
+        startAdjust = ((values[12]**2) % (canvas[0]/2))
+        startX = 0 - canvas[0]*.25 + startAdjust
+        if body.signMod < 0:
+            startX = canvas[0] + canvas[0]*.25 - startAdjust
+
+        for i in range(0, body.streaks):
+            slope = 3 * body.signMod
+            streakWidth = ((values[(body.seed.total*values[i+5])%16]**2) % 30) + 2
+
+            rise = ((canvas[1] * body.seed.total)) + streakWidth
+
+            draw.line((
+                startX, streakWidth*-1,
+                float(rise)/slope, rise),
+                fill=(255,255,255, 120 - ((streakWidth-2)*4)),
+                width=streakWidth)
+            startX += (streakWidth*(values[i+5]%3)*1.5) * body.signMod
+
+        scene.paste(streakField, (0,0), streakField)
+        return scene
+
     def drawStars(self, scene, body, canvas):
         values = body.seed.values
 

@@ -55,11 +55,14 @@ pMask = scene.copy()
 # Draw background colors
 starArtist.drawBackground(scene, planet, canvas)
 
+# Draw light lines
+starArtist.drawStreaks(scene, planet, canvas)
+
 # Adds stars
-scene = starArtist.drawStars(scene, planet, canvas)
+starArtist.drawStars(scene, planet, canvas)
 
 # draw planet
-scene = bodyArtist.draw(scene, planet, canvas)
+bodyArtist.draw(scene, planet, canvas)
 
 # add moons
 draw = ImageDraw.Draw(scene)
