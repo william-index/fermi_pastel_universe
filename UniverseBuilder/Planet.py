@@ -1,54 +1,93 @@
 #!/usr/bin/python
-
+import attr
 from DataLists.Colors import colors
 from Utils.ImageAdjuster import ImageAdjuster
+
 
 from random import randint
 
 """
 Generates Planet Data and details from seed
 """
-class Planet:
-    def __init__(self, seed, canvas):
-        self.imageAdjuster = ImageAdjuster()
+@attr.s
+class Planet(object):
+    seed = attr.ib()
+    canvas = attr.ib()
 
-        self.seed = seed
-        self.canvas = canvas
+    @property
+    def imageAdjuster(self):
+        return ImageAdjuster()
 
-        self.r = self.getPlanetRadius()
-        self.box = (canvas[0]/2-self.r, canvas[1]/2-self.r, canvas[0]/2+self.r, canvas[1]/2+self.r)
-        self.landCount = self.getLandMassCount()
-        self.lands = self.createLandMassPatterns(self.landCount)
+    @property
+    def baseColor(self):
+        return self.getColor(0)
 
-        self.atmosphere = self.createAtmosphere()
+    @property
+    def secondaryColor(self):
+        return self.getColor(1)
 
-        self.shadows = self.createShadows()
-        self.shadowIntensity = (self.seed.values[8]/16.0 % 0.3) + 0.1
+    @property
+    def bgColor(self):
+        return self.imageAdjuster.adjustHSV(self.baseColor, [.1, 0, 0])
 
-        self.moons = self.generateMoons()
-        self.rings = self.generateRings()
+    @property
+    def signMod(self):
+        values = self.seed.values
+        if self.seed.total % 2:
+            return 1
+        else:
+            return -1
 
-        self.signMod = self.getSignMod()
+    @property
+    def streaks(self):
+        return self.seed.values[9] % 5
 
-        self.isShiny = self.seed.values[self.seed.values[7]] % 2
+    @property
+    def box(self):
+        boxX1 = self.canvas[0]/2-self.r
+        boxY1 = self.canvas[1]/2-self.r
+        boxX2 = self.canvas[0]/2+self.r
+        boxY2 = self.canvas[1]/2+self.r
+        return (boxX1, boxY1, boxX2, boxY2)
 
-        self.streaks = self.seed.values[9] % 5
+    @property
+    def shadowIntensity(self):
+        return (self.seed.values[8]/16.0 % 0.3) + 0.1
 
-        # colorsys
-        self.baseColor = self.getColor(0)
-        self.secondaryColor = self.getColor(1)
-        self.bgColor = self.imageAdjuster.adjustHSV(self.baseColor, [.1, 0, 0])
+    @property
+    def isShiny(self):
+        return self.seed.values[self.seed.values[7]] % 2
 
-        self.ringColor = self.imageAdjuster.adjustHSV(self.secondaryColor, [0.4, 0, 0])
-        self.moonColors = [self.getColor(3), self.getColor(4), self.getColor(5), self.getColor(6), self.getColor(3), self.getColor(4), self.getColor(5), self.getColor(6), self.getColor(3), self.getColor(4), self.getColor(5), self.getColor(6)]
+    @property
+    def ringColor(self):
+        return self.imageAdjuster.adjustHSV(
+            self.secondaryColor,
+            [0.4, 0, 0]
+        )
 
-        self.ringAngle = (self.seed.values[11]*self.seed.values[10]) %90
+    @property
+    def ringAngle(self):
+        return (self.seed.values[11]*self.seed.values[10]) %90
 
-        self.drips = self.generateDrips()
+    @property
+    def moonColors(self):
+        return [
+            self.getColor(3),
+            self.getColor(4),
+            self.getColor(5),
+            self.getColor(6),
+            self.getColor(3),
+            self.getColor(4),
+            self.getColor(5),
+            self.getColor(6),
+            self.getColor(3),
+            self.getColor(4),
+            self.getColor(5),
+            self.getColor(6)
+        ]
 
-        self.life = self.calculateLife()
-
-    def calculateLife(self):
+    @property
+    def life(self):
         lifeTypes = []
         values = self.seed.values
         print self.seed.total % 25
@@ -63,7 +102,8 @@ class Planet:
 
         return lifeTypes
 
-    def generateDrips(self):
+    @property
+    def drips(self):
         if self.seed.total % 2:
             return []
 
@@ -80,24 +120,8 @@ class Planet:
             drips.append([dripX, dripY, dripH, dripW])
         return drips
 
-    def getSignMod(self):
-        values = self.seed.values
-        if self.seed.total % 2:
-            return 1
-        else:
-            return -1
-
-    def getColor(self, key, mod=0):
-        values = self.seed.values
-        totalNumberSeed = 0
-        for k, v in enumerate(range(key % 16, (key + 3) % 16)):
-            key = values[values[v]]
-            totalNumberSeed += key
-
-        colorKey = ((totalNumberSeed % len(colors)) + mod) % len(colors)
-        return colors[colorKey]
-
-    def generateRings(self):
+    @property
+    def rings(self):
         values = self.seed.values
         box = self.box
         rings = []
@@ -120,7 +144,8 @@ class Planet:
 
         return rings
 
-    def generateMoons(self):
+    @property
+    def moons(self):
         values = self.seed.values
         moons = []
         if values[13] % 2:
@@ -137,17 +162,21 @@ class Planet:
                 moons.append(moon)
         return moons
 
-    def getPlanetRadius(self):
+    @property
+    def r(self):
         return (self.seed.total % 20) + 4
 
-    def getLandMassCount(self):
+    @property
+    def landCount(self):
         landCountSeedIndex = self.seed.values[self.seed.total % 16]
         landCount = 0
         if landCountSeedIndex % 3:
             landCount = (self.seed.total % landCountSeedIndex)
         return landCount
 
-    def createLandMassPatterns(self, landCount):
+    @property
+    def lands(self):
+        landCount = self.landCount
         lands = []
 
         for i in range(0, landCount):
@@ -166,11 +195,18 @@ class Planet:
 
         return lands
 
-    def createAtmosphere(self):
-        print "atmospheres not enabled"
-        return
-
-    def createShadows(self):
+    @property
+    def shadows(self):
         shadow1 = (self.box[0]+self.box[0]/8, self.box[1]+self.box[1]/8, self.box[2]-self.box[0]/4, self.box[3]-self.box[0]/4)
         shadow2 = (self.box[0]+self.box[0]/4, self.box[1]+self.box[1]/4, self.box[2]-self.box[0]/2.5, self.box[3]-self.box[0]/2)
         return [shadow1, shadow2]
+
+    def getColor(self, key, mod=0):
+        values = self.seed.values
+        totalNumberSeed = 0
+        for k, v in enumerate(range(key % 16, (key + 3) % 16)):
+            key = values[values[v]]
+            totalNumberSeed += key
+
+        colorKey = ((totalNumberSeed % len(colors)) + mod) % len(colors)
+        return colors[colorKey]

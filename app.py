@@ -1,10 +1,7 @@
 #!/usr/bin/python
 from PIL import Image, ImageDraw, ImageOps, ImageFont
-from UniverseBuilder.CoordinateParser import CoordinateParser, CoordinateGenerator
-from UniverseBuilder.Planet import Planet
-from SpaceArtist.CelestialBodies import CelestialBodies
-from SpaceArtist.OpenSpace import OpenSpace
-from SpaceArtist.InterfaceOverlay import InterfaceOverlay
+from UniverseBuilder import CoordinateParser, CoordinateGenerator, Planet
+from SpaceArtist import CelestialBodies, OpenSpace, InterfaceOverlay
 from Utils.ImageAdjuster import ImageAdjuster
 
 from random import randint
