@@ -41,19 +41,10 @@ testPlanetAddresses = [
 planetSeed = CoordinateParser(testPlanetAddresses[11])
 planet = Planet(planetSeed, canvas)
 
-
-# @TODO Bandaids on planets
-
-# @TODO Show planet name/ID
-# @TODO planet stats
-#       - temperature
-#       - life
-#       - life types
-
-# @TODO planet destruction
-# @TODO advances civilization (visible and space crafts)
-# @TODO artificial planets?
-# @TODO post planets to twitter
+# @TODO refactor this to be what create and returns final planet scenes
+#       App will also need two entry points for hourly posts and replies
+# @TODO post planets to twitter on the hour
+# @TODO check last 10 minutes of mentions (max 20) and reply if they match a regex
 # @TODO reply with planets to explorers: http://stackoverflow.com/questions/16377315/tweepy-user-id-from-mention
 #       http://tweepy.readthedocs.io/en/v3.5.0/cursor_tutorial.html
 
