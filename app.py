@@ -1,8 +1,12 @@
 #!/usr/bin/python
+# FermiPasteladox
+
+
 from PIL import Image, ImageDraw, ImageOps, ImageFont
 from UniverseBuilder import CoordinateParser, CoordinateGenerator, Planet
 from SpaceArtist import CelestialBodies, OpenSpace, InterfaceOverlay
 from Utils.ImageAdjuster import ImageAdjuster
+from TwitterWrapper.TweepyWrapper import TwitterApi
 
 from random import randint
 
@@ -11,6 +15,11 @@ starArtist = OpenSpace()
 interfaceArtist = InterfaceOverlay()
 imageAdjuster = ImageAdjuster()
 coordGenerator = CoordinateGenerator()
+twitter = TwitterApi()
+
+# Twitter Testing
+# twitter.PostUpdate('test')
+twitter.recentMentions()
 
 canvas = (100, 100)
 testPlanetAddresses = [
