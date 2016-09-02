@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from PIL import Image, ImageDraw, ImageOps
-from Utils.ImageAdjuster import ImageAdjuster
+from ..Utils.ImageAdjuster import ImageAdjuster
 
 # image adjustment utility
 imageAdjuster = ImageAdjuster()

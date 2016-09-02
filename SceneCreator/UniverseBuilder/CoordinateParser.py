@@ -58,5 +58,4 @@ class CoordinateGenerator:
             values.append(rHex)
         values.insert(6,'-')
         values.insert(11,'-')
-        print ''.join(values)
         return ''.join(values)

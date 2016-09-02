@@ -1,7 +1,7 @@
 #!/usr/bin/python
 from PIL import Image, ImageDraw, ImageOps
-from UniverseBuilder.TerrainBuilder import TerrainBuilder
-from Utils.ImageAdjuster import ImageAdjuster
+from ..UniverseBuilder.TerrainBuilder import TerrainBuilder
+from ..Utils.ImageAdjuster import ImageAdjuster
 
 # image adjustment utility
 imageAdjuster = ImageAdjuster()

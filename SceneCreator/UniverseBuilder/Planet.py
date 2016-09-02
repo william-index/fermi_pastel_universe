@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import attr
-from DataLists.Colors import colors
-from Utils.ImageAdjuster import ImageAdjuster
+from ..DataLists.Colors import colors
+from ..Utils.ImageAdjuster import ImageAdjuster
 
 
 from random import randint
@@ -90,8 +90,7 @@ class Planet(object):
     def life(self):
         lifeTypes = []
         values = self.seed.values
-        print self.seed.total % 25
-        print sum(values[0:6])
+
         if self.seed.total % 25 < 2 and sum(values[0:6]) >= 30:
             if sum(values[0:6]) == sum(values[6:10]) == sum(values[10:16]):
                 lifeTypes = ["intelligent"]
