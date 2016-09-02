@@ -25,11 +25,9 @@ class SceneCreator(object):
     @property
     def address(self):
         if self._address:
-            print self._address
             return self._address
 
         self._address = self._coordGenerator.getRandomAddress()
-        print self._address
         return self._address
 
     @address.setter

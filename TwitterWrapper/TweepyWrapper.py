@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import tweepy
+import re
 from time import time, gmtime, strftime
 from datetime import datetime
 from Credentials.Credentials import *
@@ -20,21 +21,28 @@ class TwitterApi:
     def postUpdateWithImage(self, filePath, status):
         self.twitter_api.update_with_media(filePath, status=status)
 
-    def recentMentions(self):
+    def recentMentions(self, minutes):
         mentions = self.twitter_api.mentions_timeline(
             count = 20,
             include_rts = 0)
 
+        # TODO return only those from last n (param) minutes
+        validExplorations = []
         for mention in mentions:
-            # print mention.created_at
-            # # time.mktime()
-            # print strftime("%Y-%m-%d %H:%M:%S", gmtime())
             s1 = mention.created_at
             s2 = strftime("%Y-%m-%d %H:%M:%S", gmtime())
             FMT = "%Y-%m-%d %H:%M:%S"
-            
-            tdelta = datetime.strptime(s2, FMT) - datetime.strptime(s1, FMT)
-            print tdelta
+            tdelta = datetime.strptime(s2, FMT) - s1
 
-            print mention.text
-            print mention.user.screen_name
+            if tdelta.seconds <= minutes*60 and self.tweetIsValid(mention):
+                validExplorations.append(mention)
+
+        return validExplorations
+
+    def tweetIsValid(self, tweet):
+        pattern = '([A-Fa-f0-9]{6}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{6})'
+        planetCode = re.search(pattern, tweet.text)
+        if planetCode:
+            return True
+        else:
+            return False
