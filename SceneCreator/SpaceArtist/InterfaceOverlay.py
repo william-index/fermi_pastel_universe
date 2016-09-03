@@ -1,7 +1,6 @@
 #!/usr/bin/python
 from PIL import Image, ImageDraw, ImageOps, ImageFont
 
-
 """
 Handles Drawing Interface elements
 """
@@ -14,7 +13,7 @@ class InterfaceOverlay:
 
     def draw(self, scene, planet, canvas):
         self.canvas = (canvas[0], canvas[1]+self.topArea+self.bottomArea)
-        interfacedScene = Image.new('RGBA', self.canvas, (255,255,255,255))
+        interfacedScene = Image.new('RGB', self.canvas, (255,255,255))
         interfacedScene.paste(scene, (0,self.topArea))
 
         # Planet Name

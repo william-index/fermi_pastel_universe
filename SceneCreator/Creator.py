@@ -82,10 +82,10 @@ class SceneCreator(object):
             draw.ellipse(moon, fill=planet.moonColors[k], outline=(255,255,255,255))
 
         # Scale and resize
-        canvas = (canvas[0]*5, canvas[1]*5)
+        canvas = (canvas[0]*6, canvas[1]*6)
         scene = scene.resize(canvas, Image.NEAREST)
 
         # Interface
         scene = self._interfaceArtist.draw(scene, planet, canvas)
 
-        return scene, self.sceneTxt
+        return scene, self.sceneTxt.upper()

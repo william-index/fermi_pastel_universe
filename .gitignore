@@ -1,2 +1,4 @@
 Credentials/Credentials.py
 *.pyc
+deployment.sh
+art/rendered

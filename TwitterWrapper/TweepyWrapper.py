@@ -31,10 +31,20 @@ class TwitterApi:
         for mention in mentions:
             s1 = mention.created_at
             s2 = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-            FMT = "%Y-%m-%d %H:%M:%S"
-            tdelta = datetime.strptime(s2, FMT) - s1
+            s2 = datetime.strptime(s2, "%Y-%m-%d %H:%M:%S")
+            tdelta = s2 - s1
+            sameDay = s1.month == s2.month and s1.day == s2.day and s1.year == s2.year
 
-            if tdelta.seconds <= minutes*60 and self.tweetIsValid(mention):
+            print mention.text
+            print "     Same Day: {0}".format(sameDay)
+            print "           s2: {0}".format(s2)
+            print "delta seconds: {0}".format(tdelta.seconds)
+            print "      minutes: {0}".format(minutes*60)
+            print "        valid: {0}".format(self.tweetIsValid(mention))
+            print "    will post: {0}".format(tdelta.seconds <= minutes*60 and self.tweetIsValid(mention) and sameDay)
+            print "---------------------------------"
+
+            if tdelta.seconds <= minutes*60 and self.tweetIsValid(mention) and sameDay:
                 validExplorations.append(mention)
 
         return validExplorations
