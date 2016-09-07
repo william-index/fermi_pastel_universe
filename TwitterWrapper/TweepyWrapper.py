@@ -35,7 +35,6 @@ class TwitterApi:
             tdelta = s2 - s1
             sameDay = s1.month == s2.month and s1.day == s2.day and s1.year == s2.year
 
-            print mention.text
             print "     Same Day: {0}".format(sameDay)
             print "           s2: {0}".format(s2)
             print "delta seconds: {0}".format(tdelta.seconds)
